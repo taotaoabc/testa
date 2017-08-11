@@ -15,7 +15,7 @@ html,body{
 .stage{
   position: relative;
   width: 100%;
-  height: 680px;
+  height: 100%;
 
 }
 /*stage end*/
@@ -43,3 +43,60 @@ html,body{
 }
 /*controller end*/
 
+.img-figure {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      margin: 0;
+      padding: 10px;
+      box-sizing: border-box;
+      background-color: #a7a0a2;
+      cursor: pointer;
+      transform-style:preserve-3d;
+      &.is-inverse{
+        transform:rotateY(180deg);
+      }
+    }
+
+.img-figure img {
+      position: absolute;
+      width: 90%;
+      height: 90%;
+      
+    }
+
+.fig-caption {
+  position: absolute;
+  text-align: center; 
+  background-color: #a7a0a2; 
+  width: 100%;
+  height: 10px;
+  left:0px;
+  top:190px;
+  margin: 0 auto;
+}
+
+
+.img-title{
+  position: absolute;
+    margin: 0 auto;  /*absolute元素居中的方法*/
+    background-color: #a7a0a2;
+    font-size: 2px;
+    width: 100%;
+  }
+
+.img-back {
+      left:0;
+      top:0;
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      margin: 0;
+      box-sizing: border-box;
+      background-color: #ccc;
+      cursor: pointer;
+      transform-style:preserve-3d;
+      &.is-inverse{
+        transform:rotateY(180deg);
+      }
+    }
