@@ -28,9 +28,11 @@ imageDatas = (function(imageDatas){
 
 class ImgFigure extends React.Component{
 	handleClick(e){
-		this.props.inverse();
+		(this.props.inverse)();
 		e.stopPropagation();
 		e.preventDefault();
+		//var tipE = ReactDOM.findDOMNode(this.refs.tip);
+		//console.log(1)
 
 	}
 
@@ -43,7 +45,7 @@ class ImgFigure extends React.Component{
 	  		styleObj = this.props.arrange.pos;
 	  	}
 
-		if(this.props.arrange.rotate)
+		if(this.props.arrange)
 	  	{
 	  		(['-moz-','-ms-','-webkit-','']).forEach(function(value){
 	  			styleObj.transform = 'rotate(' + this.props.arrange.rotate
@@ -54,13 +56,14 @@ class ImgFigure extends React.Component{
 	  	}
 
 	  	var imgFigureClassName = 'img-figure';
-	  	imgFigureClassName += this.props.arrange.isInverse ? " is-inverse"
+
+	  	styleObj.transform += this.props.arrange.isInverse ? " rotateY(180deg)"
 	  		:"";
 
 
 		return(
-			<figure className='img-figure' style={styleObj}
-			onClick={this.handleClick}>
+			<figure className={imgFigureClassName} style={styleObj}
+			onClick={this.handleClick.bind(this)}>
 				<img src={this.props.data.imgUrl} 
 				alt={this.props.data.title}/>
 				<figcaption className='fig-caption'>
@@ -68,7 +71,7 @@ class ImgFigure extends React.Component{
 					
 				</figcaption>
 
-				<div className="img-back" onClick={this.handleClick}>
+				<div className="img-back" onClick={this.handleClick.bind(this)}>
 						<p>{this.props.data.desc}</p>
 					</div>
 			</figure>
@@ -84,6 +87,21 @@ class AppComponent extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {imgsArray:[]};
+
+// imageDatas.forEach(function(value ,index){
+
+//   		if(!this.state.imgsArray[index]){
+//   			this.state.imgsArray[index] = {
+//   				pos:{
+//   					top:0,
+//   					left:0
+//   				},
+//   				rotate:0,
+//   				isInverse:""
+//   			}
+//   		}
+//   	});
+
 		this.Constant =
 		{
 			centerPos:{
@@ -110,11 +128,15 @@ class AppComponent extends React.Component {
 	inverse(index){
 		return function(){
 			var imgArrangeArr = this.state.imgsArray;
+
 			imgArrangeArr[index].isInverse = !imgArrangeArr[index].isInverse;
+
 			this.setState(
 			{
 				imgsArray:imgArrangeArr
-			})
+			});
+			console.log(index);
+			console.log(imgArrangeArr[index].isInverse);
 		}
 	}
 	/*
@@ -142,7 +164,8 @@ class AppComponent extends React.Component {
 		//居中的centerIndex不需要旋转
 		imgACArr[0].rotate = 0;
 
-		console.log(imgACArr[0].pos);
+		imgACArr[0].isInverse = imgACArr[0].isInverse;
+
 
 		topImgSpliceIndex = Math.ceil
 		(Math.random()*imgsArray.length - topImgNum);
@@ -156,7 +179,8 @@ class AppComponent extends React.Component {
 					top: getRangeRandom(vPosRangeTopY[0],vPosRangeTopY[1]),
 					left: getRangeRandom(vPosRangeX[0],vPosRangeX[1])
 				},
-				rotate:get30DegreeRandom()
+				rotate:get30DegreeRandom(),
+				isInverse:imgsTopArray[index].isInverse
 			}
 		});
 
@@ -177,7 +201,8 @@ class AppComponent extends React.Component {
 					top:getRangeRandom(hPosRangeY[0],hPosRangeY[1]),
 					left:getRangeRandom(hPosRangeLORX[0],hPosRangeLORX[1])
 				},
-				rotate:get30DegreeRandom()
+				rotate:get30DegreeRandom(),
+				isInverse:imgsArray[i].isInverse
 				
 			}
 		}
@@ -202,10 +227,7 @@ class AppComponent extends React.Component {
 		  stageHeight = stageDOM.scrollHeight,
 		  halfStageWidth = Math.ceil(stageWidth/2),
 		  halfStageHeight = Math.ceil(stageHeight/2);
-		  console.log(stageWidth);
-		  console.log(stageHeight);
-		  console.log(halfStageWidth);
-		  console.log(halfStageHeight);
+
 
 		  var ImageFigureDOM = ReactDOM.findDOMNode(this.refs.ImgFigure0),
 		  imgWidth = ImageFigureDOM.scrollWidth,
@@ -213,8 +235,6 @@ class AppComponent extends React.Component {
 		  hfImgWidth = Math.ceil(imgWidth/2),
 		  hfImgHeight = Math.ceil(imgHeight/2);
 
-		  console.log(hfImgWidth);
-		  console.log(hfImgHeight);
 
 
 		  //计算图片中心点的位置
@@ -240,7 +260,7 @@ class AppComponent extends React.Component {
 
 
 		  this.rearange(0);
-
+console.log("X");
 
 
 	}
@@ -262,7 +282,6 @@ class AppComponent extends React.Component {
   	var controllerUnits = [],
   		imgFigures = [];
 
-  	
 
   	imageDatas.forEach(function(value ,index){
 
@@ -273,15 +292,16 @@ class AppComponent extends React.Component {
   					left:0
   				},
   				rotate:0,
-  				isInverse:false
+  				isInverse:""
   			}
   		}
+
   		imgFigures.push(<ImgFigure className="img-figure"
   			key={value.filename} data={value} ref={'ImgFigure' + index}
   			arrange = {this.state.imgsArray[index]}
-  			inverse = {this.inverse(index)}/>);
+  			inverse = {this.inverse(index).bind(this)}/>);
   	}.bind(this));
-
+console.log("Y1");
     return (
     	<section className="stage" ref="stage">
     		<section className='imgSec'>

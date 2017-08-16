@@ -53,10 +53,13 @@ html,body{
       background-color: #a7a0a2;
       cursor: pointer;
       transform-style:preserve-3d;
-      &.is-inverse{
-        transform:rotateY(180deg);
-      }
+      
     }
+
+.is-inverse{
+        transform:rotateY(180deg);
+
+      }
 
 .img-figure img {
       position: absolute;
@@ -96,7 +99,5 @@ html,body{
       background-color: #ccc;
       cursor: pointer;
       transform-style:preserve-3d;
-      &.is-inverse{
-        transform:rotateY(180deg);
-      }
+      backface-visibility:hidden;
     }
